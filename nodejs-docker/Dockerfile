@@ -3,6 +3,9 @@
 # 베이스 이미지를 명시해준다. 
 FROM node:10
 
+# 
+COPY ./ ./ 
+
 # 추가적으로 필요한 파일들을 다운받는다. 
 RUN npm install
 
