@@ -20,10 +20,10 @@ client.set('number', 0);
 
 // 해당 주소에 들어 올 때마다 숫자가 1씩 증가하도록 하는 프로그램
 app.get('/', (req, res) => {
-  client('number', (err, number) => {
+  client.get('number', (err, number) => {
     //현재 숫자를 가져 온 후에 1씩 증가
+    res.send('방문자 수: ' + number);
     client.set('number', parseInt(number) + 1);
-    res.send('방문자 수: ', number);
   });
 });
 
