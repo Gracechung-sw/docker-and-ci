@@ -3,6 +3,9 @@
 # 베이스 이미지를 명시해준다. 
 FROM node:10
 
+# work directory 명시
+WORKDIR /user/src/app
+
 # 
 COPY ./ ./ 
 
