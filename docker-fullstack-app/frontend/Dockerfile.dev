@@ -1,0 +1,21 @@
+#개발 환경을 위한 Dockerfile작성
+
+#베이스 이미지를 도커 허브에서 가져옵니다. 
+FROM node:alpine 
+
+#해당 어플의 소스 코드들ㄹ이 들어가게 됩니다. 
+WORKDIR /app
+
+#소스 코드가 바뀔때 마다 종속성까지 다시 복사를 해주는 수고를 하지 않기 위해 먼저 종속성 목록을 담고 있는 Package.json을 복사합니다. 
+COPY package.json ./
+
+#package.json에 명시된 종속성을 다운받습니다. 
+RUN npm install
+
+#이제는 모든 소스코드들을 WORKDIR로 복사해줍니다. 
+COPY ./ ./
+
+#이 컨테이너가 실행될 때 같이 실행할 명령어를 지정해줍니다. 
+CMD ["npm", "run", "start"]
+
+

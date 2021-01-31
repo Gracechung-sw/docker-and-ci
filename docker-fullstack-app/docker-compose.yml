@@ -1,0 +1,39 @@
+version: '3'
+services:
+  # frontend 컨테이너
+  frontend:
+    #개발 환경을 위한 Dockerfile이 어디있는지 알려준다.
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./frontend
+    volumes:
+      #코드를 수정 후 다시 이미지를 build하는ㄴ 것 없이 수정된 코드가 반영이 될 수 있게 volume을 이용해준다.
+      - /app/node_modules
+      - ./frontend:/app
+    #react 앱을 종료할 때 나오는 버그를 잡아줌
+    stdin_open: true
+
+  nginx:
+    #Nginx가 가동되고 있지 않으면 나머지 기능도 작동하지 못하기 때문에 항상 재시작
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - '3000:80'
+
+  backend: #여기서 backennd에 MySQL 환경변수들이 들어가있고, MySQL 컨테이너를 docker-compose에 따로 명시해주지 않은 것은,
+    #운영환경에서는 Mysql 컨테이너가 아닌 RDS를 사용하기 때문이다.
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./backend
+    container_name: app_backend
+    volumes:
+      - /app/node_modules
+      - ./backend:/app
+    environment:
+      MYSQL_HOST: process.env.MYSQL_HOST
+      MYSQL_USER: process.env.MYSQL_USER
+      MYSQL_ROOT_PASSWORD: process.env.MYSQL_ROOT_PASSWORD
+      MYSQL_DATABASE: process.env.MYSQL_DATABASE,
+      MYSQL_PORT: process.env.MYSQL_PORT,
