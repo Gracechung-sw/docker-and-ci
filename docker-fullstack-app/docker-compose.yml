@@ -22,7 +22,8 @@ services:
     ports:
       - '3000:80'
 
-  backend:
+  backend: #여기서 backennd에 MySQL 환경변수들이 들어가있고, MySQL 컨테이너를 docker-compose에 따로 명시해주지 않은 것은,
+    #운영환경에서는 Mysql 컨테이너가 아닌 RDS를 사용하기 때문이다.
     build:
       dockerfile: Dockerfile.dev
       context: ./backend
